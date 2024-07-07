@@ -8,6 +8,7 @@ target("snake")
     "Shell32"
     )
     add_files("resource.rc")
+    add_includedirs("src")
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
 --
