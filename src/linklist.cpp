@@ -41,6 +41,17 @@ void linklist::addnode(int x, int y)
     length++;
 }
 
+// 删除节点
+void linklist::deletenode(node *p)
+{
+    node *q = head;
+    while (q->next != p)
+        q = q->next;
+    q->next = p->next;
+    delete p;
+    length--;
+}
+
 // 获取节点的x坐标
 int linklist::getx(node *p)
 {
