@@ -1,5 +1,4 @@
 #include <graphics.h>
-#include <winuser.h>
 #define BLOCK_SIZE 20 // 每个小格子的长宽大小 
 #define HEIGHT 30 // 高度上一共30个小格子
 #define WIDTH 40 //  宽度上一共40个小格子 
@@ -19,5 +18,5 @@ class field
         ~field();
         void draw();
     private:
-        char map[WIDTH][HEIGHT];
+        int map[WIDTH][HEIGHT];
 };

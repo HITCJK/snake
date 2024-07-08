@@ -12,7 +12,8 @@ EasyX版本：20240601
 
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-    field fd;
+    field field;
+	field.draw();
     while (1)
         ;
     return 0;

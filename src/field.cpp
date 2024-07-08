@@ -38,17 +38,28 @@ void field::draw()
     {
         for (int j = 0; j < HEIGHT; j++)
         {
+            if (map[i][j] == 0)
+            {
+                // 清空
+                clearrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
+            }
             if (map[i][j] == 1)
             {
                 // 画蛇
+                setfillcolor(BLUE);
+                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
             }
             else if (map[i][j] == 2)
             {
                 // 画食物
+                setfillcolor(RED);
+                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
             }
             else if (map[i][j] == 3)
             {
                 // 画障碍物
+                setfillcolor(BLACK);
+                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
             }
         }
     }
