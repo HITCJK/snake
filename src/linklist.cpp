@@ -76,8 +76,26 @@ node *linklist::gethead()
     return head;
 }
 
+// 获取链表尾节点指针
+node *linklist::gettail()
+{
+    node *p = head;
+    while (p->next != nullptr)
+        p = p->next;
+    return p;
+}
+
 // 获取下一个节点指针
 node *linklist::getnext(node *p)
 {
     return p->next;
+}
+
+// 获取上一个节点指针
+node *linklist::getprevious(node *p)
+{
+    node *q = head;
+    while (q->next != p)
+        q = q->next;
+    return q;
 }

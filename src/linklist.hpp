@@ -16,7 +16,9 @@ class linklist
     int gety(node *p);
     int getlength();
     node *gethead();
+    node *gettail();
     node *getnext(node *p);
+    node *getprevious(node *p);
 
   private:
     node *head;

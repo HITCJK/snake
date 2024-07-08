@@ -1,7 +1,24 @@
-class snake{
-    public:
-    snake();
+#include "linklist.hpp"
+
+enum dir
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+class snake
+{
+  public:
+    snake(int x, int y,dir dir1);
     ~snake();
-    private:
-    
+    void move();
+    void grow();
+    void changedirection();
+    int getlength();
+    dir getdirection();
+
+  private:
+    dir direction;
+    linklist *snakedata;
 };
