@@ -1,4 +1,5 @@
 #include "linklist.hpp"
+#include <easyx.h>
 
 enum dir
 {
@@ -14,7 +15,7 @@ class snake
     ~snake();
     void move();
     void grow();
-    void changedirection();
+    void changedirection(bool player = 0);
     dir getdirection();
     int getlength();
     int getx(node *p);

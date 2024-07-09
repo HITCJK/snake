@@ -1,4 +1,5 @@
 #include "snake.hpp"
+#include <winuser.h>
 
 snake::snake(int x, int y, dir dir1)
 {
@@ -75,9 +76,29 @@ void snake::grow()
 }
 
 // 蛇改变方向
-void snake::changedirection()
+void snake::changedirection(bool player)
 {
-
+    ExMessage m;
+    peekmessage(&m, EX_KEY);
+    if (m.message == WM_KEYDOWN)
+    {
+        if (((m.vkcode==0x57&&~player)||(m.vkcode==VK_UP&&player))&&direction != DOWN)
+        {
+            direction = UP;
+        }
+        if (((m.vkcode==0x53&&~player)||(m.vkcode==VK_DOWN&&player))&&direction != UP)
+        {
+            direction = DOWN;
+        }
+        if (((m.vkcode==0x41&&~player)||(m.vkcode==VK_LEFT&&player))&&direction != RIGHT)
+        {
+            direction = LEFT;
+        }
+        if (((m.vkcode==0x44&&~player)||(m.vkcode==VK_RIGHT&&player))&&direction != LEFT)
+        {
+            direction = RIGHT;
+        }
+    }
 }
 
 // 获取蛇的方向
