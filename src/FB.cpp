@@ -1,9 +1,13 @@
 #include "field.hpp"
 #include "time.h"
 #include "stdlib.h"
+#include <stdio.h>
+#include <conio.h>
 #include <consoleapi2.h>
 #include <synchapi.h>
 #include "snake.hpp"
+
+int isFailure=0;/*是否失败*/
 
 int GetRandomNumber()//生成随机数
 { 
@@ -11,6 +15,32 @@ int RandomNumber;
 srand((unsigned)time(NULL));//time()用系统时间初始化种。为rand()生成不同的随机种子。 
 RandomNumber =rand()%10+1;//生成1-10随机数
 return RandomNumber;
+}
+
+void updateWithoutInput(snake snake) // 蛇的运动
+{
+	if (isFailure) //  如果游戏失败，函数返回
+		return;
+	static int waitIndex = 1; // 静态局部变量，初始化时为1
+	waitIndex++; // 每一帧+1
+	if (waitIndex==10) // 如果等于10才执行，这样小蛇每隔10帧移动一次
+	{
+		snake.move(); //  调用小蛇移动函数
+		waitIndex = 1; // 再变成1
+	}
+}
+
+void updateWithInput(snake snake)  // 蛇的方向改变
+{
+	if(_kbhit() && isFailure==0)  //  如果有按键输入，并且不失败
+	{
+		char input =getchar(); //  获得按键输入
+		if (input=='a' || input=='s' || input=='d' || input=='w') // 如果是asdw 
+		{
+			snake.changedirection()=input;  // 设定移动方向
+			snake.move(); // 调用小蛇移动函数
+		}
+	}
 }
 
 /*判断是否与蛇身体重合*/
@@ -41,6 +71,30 @@ int judge(snake snake,int a,int b)
   return k;
 }
 
+int getx(snake snake)
+{
+  struct node*p=NULL;
+  int i;
+  p=snake.gethead();
+  for(i=0;i<snake.getlength();i++)
+  {
+    p=snake.getnext(p);
+  }
+  return p->x;
+}
+
+int gety(snake snake)
+{
+  struct node*p=NULL;
+  int i;
+  p=snake.gethead();
+  for(i=0;i<snake.getlength();i++)
+  {
+    p=snake.getnext(p);
+  }
+  return p->y;
+}
+
 
 /*功能：
  1.每隔30s生成一次食物和障碍
@@ -54,10 +108,12 @@ void position()
   snake snake(15,20,RIGHT);
   field field;
   int a,length1,length2;
-  int i,j;
-  int m=0;
-  static int g=0,k=0;
+  int i,j;/*遍历*/
+  int m=0;/*判断食物或者障碍是否与蛇身重合*/
+  static int g=0,k=0;/*判断是否第一次进入系统*/
   int x,y;/*蛇头坐标*/
+  x=getx(snake);
+  y=gety(snake);
   Sleep(50);
   if(g!=k)
   {
@@ -128,7 +184,7 @@ void position()
        if(x/*蛇头坐标*/==linklist1.getx(p)&&y/*蛇头坐标*/==linklist1.gety(p))
        {
         linklist1.deletenode(p);
-        /*蛇的长度加一*/
+        snake.grow();
        }
     }
     else
@@ -137,7 +193,7 @@ void position()
       if(x/*蛇头坐标*/==linklist1.getx(p)&&y/*蛇头坐标*/==linklist1.gety(p))
        {
         linklist1.deletenode(p);
-        /*蛇的长度加一*/
+        snake.grow();
        }
     }
   }
@@ -153,6 +209,7 @@ for(i=0;i<length2;i++)
        if(x/*蛇头坐标*/==linklist2.getx(pr)&&y/*蛇头坐标*/==linklist2.gety(pr))
        {
         /*游戏结束*/
+        isFailure=1;
         g++;
        }
     }
@@ -162,6 +219,7 @@ for(i=0;i<length2;i++)
       if(x/*蛇头坐标*/==linklist2.getx(pr)&&y/*蛇头坐标*/==linklist2.gety(pr))
        {
         /*游戏结束*/
+        isFailure=1;
         g++;
        }
     }
@@ -170,6 +228,9 @@ for(i=0;i<length2;i++)
 if(x<0||x>WIDTH||y<0||y>HEIGHT)
 {
   /*游戏结束*/
+  isFailure=1;
   g++;
 }
+updateWithoutInput(snake);
+updateWithInput(snake);
 }
