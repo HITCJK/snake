@@ -15,9 +15,12 @@ class snake
     void move();
     void grow();
     void changedirection();
-    int getlength();
     dir getdirection();
-
+    int getlength();
+    int getx(node *p);
+    int gety(node *p);
+    node *gethead();
+    node *getnext(node *p);
   private:
     dir direction;
     linklist *snakedata;

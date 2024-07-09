@@ -80,14 +80,38 @@ void snake::changedirection()
 
 }
 
+// 获取蛇的方向
+dir snake::getdirection()
+{
+    return direction;
+}
+
 // 获取蛇的长度
 int snake::getlength()
 {
     return snakedata->getlength();
 }
 
-// 获取蛇的方向
-dir snake::getdirection()
+// 获取某节的x坐标
+int snake::getx(node *p)
 {
-    return direction;
+    return snakedata->getx(p);
+}
+
+// 获取某节的y坐标
+int snake::gety(node *p)
+{
+    return snakedata->gety(p);
+}
+
+// 获取蛇的头节点
+node *snake::gethead()
+{
+    return snakedata->gethead();
+}
+
+// 获取蛇的下一节
+node *snake::getnext(node *p)
+{
+    return snakedata->getnext(p);
 }
