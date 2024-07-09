@@ -25,23 +25,24 @@ void updateWithoutInput(snake snake) // 蛇的运动
 	waitIndex++; // 每一帧+1
 	if (waitIndex==10) // 如果等于10才执行，这样小蛇每隔10帧移动一次
 	{
+    snake.changedirection(0);
 		snake.move(); //  调用小蛇移动函数
 		waitIndex = 1; // 再变成1
 	}
 }
 
-void updateWithInput(snake snake)  // 蛇的方向改变
+/*void updateWithInput(snake snake)  // 蛇的方向改变
 {
 	if(_kbhit() && isFailure==0)  //  如果有按键输入，并且不失败
 	{
 		char input =getchar(); //  获得按键输入
 		if (input=='a' || input=='s' || input=='d' || input=='w') // 如果是asdw 
 		{
-			snake.changedirection()=input;  // 设定移动方向
+			snake.changedirection(0)=input;  // 设定移动方向
 			snake.move(); // 调用小蛇移动函数
 		}
 	}
-}
+}*/
 
 /*判断是否与蛇身体重合*/
 int judge(snake snake,int a,int b)
@@ -107,10 +108,10 @@ void position()
   linklist linklist2;//设置对象2：面向障碍
   snake snake(15,20,RIGHT);
   field field;
-  int a,length1,length2;
+  int length1,length2;
   int i,j;/*遍历*/
   int m=0;/*判断食物或者障碍是否与蛇身重合*/
-  static int g=0,k=0;/*判断是否第一次进入系统*/
+  static int g=0,k=0,a=0;/*判断是否第一次进入系统+进入次数*/
   int x,y;/*蛇头坐标*/
   x=getx(snake);
   y=gety(snake);
@@ -232,5 +233,4 @@ if(x<0||x>WIDTH||y<0||y>HEIGHT)
   g++;
 }
 updateWithoutInput(snake);
-updateWithInput(snake);
 }
