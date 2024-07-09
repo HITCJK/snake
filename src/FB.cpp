@@ -42,17 +42,6 @@ int judge(snake snake,int a,int b)
 }
 
 
-/*void DeleteMemory(struct node*head)//释放head指向的链表中所有节点占用的内存
-{
-  struct node*p=head,*pr=NULL;
-  while(p!=NULL)
-  {
-    pr=p;
-    p=p->next;
-    free(pr);
-  }
-}*/
-
 /*功能：
  1.每隔30s生成一次食物和障碍
  2.判断蛇头是否吃到食物
@@ -63,15 +52,18 @@ void position()
   linklist linklist1;//设置对象1：面向食物
   linklist linklist2;//设置对象2：面向障碍
   snake snake(15,20,RIGHT);
+  field field;
   int a,length1,length2;
   int i,j;
-  static int k;
   int m=0;
+  static int g=0,k=0;
   int x,y;/*蛇头坐标*/
   Sleep(50);
+  if(g!=k)
+  {
+    k=0;
+  }
   if(k==0)/*第一次进入程序时即执行一次*/
-  /*DeleteMemory(headF);
-  DeleteMemory(headB);*/
   {
     for(i=WIDTH-1;i>=0;i--)
     {
@@ -94,7 +86,8 @@ void position()
        }
     }
     a=0;
-    k=1;
+    k++;
+    g=k;
   }
   else if(k!=0&&a==60)/*刷新*/
   {
@@ -119,6 +112,8 @@ void position()
        }
     }
     a=0;
+    k++;
+    g=k;
   }
   a++;
     /*判断蛇是否吃到食物,蛇每移动一次刷新一次*/
@@ -158,6 +153,7 @@ for(i=0;i<length2;i++)
        if(x/*蛇头坐标*/==linklist2.getx(pr)&&y/*蛇头坐标*/==linklist2.gety(pr))
        {
         /*游戏结束*/
+        g++;
        }
     }
     else
@@ -166,6 +162,7 @@ for(i=0;i<length2;i++)
       if(x/*蛇头坐标*/==linklist2.getx(pr)&&y/*蛇头坐标*/==linklist2.gety(pr))
        {
         /*游戏结束*/
+        g++;
        }
     }
   }
@@ -173,5 +170,6 @@ for(i=0;i<length2;i++)
 if(x<0||x>WIDTH||y<0||y>HEIGHT)
 {
   /*游戏结束*/
+  g++;
 }
 }
