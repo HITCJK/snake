@@ -9,17 +9,12 @@ class linklist
   public:
     linklist(int x = 0, int y = 0);
     ~linklist();
-    void setcoordinates(node *p, int x, int y);
+    void setcoordinates(int index, int x, int y);
     void addnode(int x, int y);
-    void deletenode(node *p);
-    int getx(node *p);
-    int gety(node *p);
+    void deletenode(int index);
+    int getx(int index);
+    int gety(int index);
     int getlength();
-    node *gethead();
-    node *gettail();
-    node *getnext(node *p);
-    node *getprevious(node *p);
-
   private:
     node *head;
     int length;

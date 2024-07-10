@@ -9,11 +9,11 @@ snake::snake(int x, int y, dir dir1)
     {
     case UP:
         i = 0;
-        j = 1;
+        j = -1;
         break;
     case DOWN:
         i = 0;
-        j = -1;
+        j = 1;
         break;
     case LEFT:
         i = -1;
@@ -36,13 +36,9 @@ snake::~snake()
 // 蛇朝当前方向运动一格
 void snake::move()
 {
-    node *q = snakedata->gettail();
-    node *p;
-    for (int i = 0; i < snakedata->getlength() - 2; i++)
+    for (int i = snakedata->getlength(); i > 1; i--)
     {
-        p = q;
-        q = snakedata->getprevious(p);
-        snakedata->setcoordinates(p, snakedata->getx(q), snakedata->gety(q));
+        snakedata->setcoordinates(i, snakedata->getx(i - 1), snakedata->gety(i - 1));
     }
     int i, j;
     switch (direction)
@@ -64,15 +60,14 @@ void snake::move()
         j = 0;
         break;
     }
-    snakedata->setcoordinates(q, snakedata->getx(q) + i, snakedata->gety(q) + j);
+    snakedata->setcoordinates(1, snakedata->getx(1) + i, snakedata->gety(1) + j);
 }
 
 // 蛇增长一格
 void snake::grow()
 {
-    snakedata->addnode(
-        2 * snakedata->getx(snakedata->gettail()) - snakedata->getx(snakedata->getprevious(snakedata->gettail())),
-        2 * snakedata->gety(snakedata->gettail()) - snakedata->gety(snakedata->getprevious(snakedata->gettail())));
+    snakedata->addnode(2 * snakedata->getx(snakedata->getlength()) - snakedata->getx(snakedata->getlength() - 1),
+                       2 * snakedata->gety(snakedata->getlength()) - snakedata->gety(snakedata->getlength() - 1));
 }
 
 // 蛇改变方向
@@ -82,19 +77,19 @@ void snake::changedirection(bool player)
     peekmessage(&m, EX_KEY);
     if (m.message == WM_KEYDOWN)
     {
-        if (((m.vkcode==0x57&&~player)||(m.vkcode==VK_UP&&player))&&direction != DOWN)
+        if (((m.vkcode == 0x57 && ~player) || (m.vkcode == VK_UP && player)) && direction != DOWN)
         {
             direction = UP;
         }
-        if (((m.vkcode==0x53&&~player)||(m.vkcode==VK_DOWN&&player))&&direction != UP)
+        if (((m.vkcode == 0x53 && ~player) || (m.vkcode == VK_DOWN && player)) && direction != UP)
         {
             direction = DOWN;
         }
-        if (((m.vkcode==0x41&&~player)||(m.vkcode==VK_LEFT&&player))&&direction != RIGHT)
+        if (((m.vkcode == 0x41 && ~player) || (m.vkcode == VK_LEFT && player)) && direction != RIGHT)
         {
             direction = LEFT;
         }
-        if (((m.vkcode==0x44&&~player)||(m.vkcode==VK_RIGHT&&player))&&direction != LEFT)
+        if (((m.vkcode == 0x44 && ~player) || (m.vkcode == VK_RIGHT && player)) && direction != LEFT)
         {
             direction = RIGHT;
         }
@@ -114,25 +109,13 @@ int snake::getlength()
 }
 
 // 获取某节的x坐标
-int snake::getx(node *p)
+int snake::getx(int index)
 {
-    return snakedata->getx(p);
+    return snakedata->getx(index);
 }
 
 // 获取某节的y坐标
-int snake::gety(node *p)
+int snake::gety(int index)
 {
-    return snakedata->gety(p);
-}
-
-// 获取蛇的头节点
-node *snake::gethead()
-{
-    return snakedata->gethead();
-}
-
-// 获取蛇的下一节
-node *snake::getnext(node *p)
-{
-    return snakedata->getnext(p);
+    return snakedata->gety(index);
 }

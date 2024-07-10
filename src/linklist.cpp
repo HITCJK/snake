@@ -21,8 +21,13 @@ linklist::~linklist()
 }
 
 // 设置节点的坐标
-void linklist::setcoordinates(node *p, int x, int y)
+void linklist::setcoordinates(int index, int x, int y)
 {
+    node *p = head;
+    for (int i = 0; i < index - 1; i++)
+    {
+        p = p->next;
+    }
     p->x = x;
     p->y = y;
 }
@@ -42,25 +47,39 @@ void linklist::addnode(int x, int y)
 }
 
 // 删除节点
-void linklist::deletenode(node *p)
+void linklist::deletenode(int index)
 {
-    node *q = head;
-    while (q->next != p)
-        q = q->next;
+    node *p = head;
+    node *q;
+    for (int i = 1; i < index; i++)
+    {
+        q = p;
+        p = p->next;
+    }
     q->next = p->next;
     delete p;
     length--;
 }
 
 // 获取节点的x坐标
-int linklist::getx(node *p)
+int linklist::getx(int index)
 {
+    node *p = head;
+    for (int i = 1; i < index; i++)
+    {
+        p = p->next;
+    }
     return p->x;
 }
 
 // 获取节点的y坐标
-int linklist::gety(node *p)
+int linklist::gety(int index)
 {
+    node *p = head;
+    for (int i = 1; i < index; i++)
+    {
+        p = p->next;
+    }
     return p->y;
 }
 
@@ -68,34 +87,4 @@ int linklist::gety(node *p)
 int linklist::getlength()
 {
     return length;
-}
-
-// 获取链表头节点指针
-node *linklist::gethead()
-{
-    return head;
-}
-
-// 获取链表尾节点指针
-node *linklist::gettail()
-{
-    node *p = head;
-    while (p->next != nullptr)
-        p = p->next;
-    return p;
-}
-
-// 获取下一个节点指针
-node *linklist::getnext(node *p)
-{
-    return p->next;
-}
-
-// 获取上一个节点指针
-node *linklist::getprevious(node *p)
-{
-    node *q = head;
-    while (q->next != p)
-        q = q->next;
-    return q;
 }
