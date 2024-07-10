@@ -37,7 +37,9 @@ void linklist::addnode(int x, int y)
 {
     node *p = head;
     while (p->next != nullptr)
-        ;
+    {
+        p = p->next;
+    }
     p->next = new node();
     p = p->next;
     p->x = x;

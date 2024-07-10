@@ -4,6 +4,7 @@
 snake::snake(int x, int y, dir dir1)
 {
     snakedata = new linklist(x, y);
+    direction = dir1;
     int i, j;
     switch (dir1)
     {
@@ -45,11 +46,11 @@ void snake::move()
     {
     case UP:
         i = 0;
-        j = 1;
+        j = -1;
         break;
     case DOWN:
         i = 0;
-        j = -1;
+        j = 1;
         break;
     case LEFT:
         i = -1;

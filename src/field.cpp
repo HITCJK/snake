@@ -41,26 +41,56 @@ void field::draw()
             if (map[i][j] == 0)
             {
                 // 清空
-                clearrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
+                setfillcolor(LIGHTGRAY);
+                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
             }
-            if (map[i][j] == 1)
+            if (map[i][j] > 0)
             {
                 // 画蛇
                 setfillcolor(BLUE);
                 fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
             }
-            else if (map[i][j] == 2)
+            else if (map[i][j] == -1)
             {
                 // 画食物
                 setfillcolor(RED);
                 fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
             }
-            else if (map[i][j] == 3)
+            else if (map[i][j] == -2)
             {
                 // 画障碍物
                 setfillcolor(BLACK);
                 fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
             }
         }
+    }
+    FlushBatchDraw();
+}
+
+void field::init()
+{
+    snake = new class snake(15, 20, RIGHT);
+}
+
+// void field::check()
+// {
+
+// }
+
+void field::refresh()
+{
+    snake->changedirection();
+    snake->move();
+    int length = snake->getlength();
+    for (int i = 0; i < WIDTH; i++)
+    {
+        for (int j = 0; j < HEIGHT; j++)
+        {
+            map[i][j] = 0;
+        }
+    }
+    for (int i = 1; i <= length; i++)
+    {
+        map[snake->getx(i)][snake->gety(i)] = i;
     }
 }
