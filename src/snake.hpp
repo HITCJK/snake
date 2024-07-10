@@ -18,10 +18,8 @@ class snake
     void changedirection(bool player = 0);
     dir getdirection();
     int getlength();
-    int getx(node *p);
-    int gety(node *p);
-    node *gethead();
-    node *getnext(node *p);
+    int getx(int index);
+    int gety(int index);
   private:
     dir direction;
     linklist *snakedata;
