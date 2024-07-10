@@ -4,6 +4,7 @@
 snake::snake(int x, int y, dir dir1)
 {
     snakedata = new linklist(x, y);
+    direction = dir1;
     int i, j;
     switch (dir1)
     {
@@ -45,11 +46,11 @@ void snake::move()
     {
     case UP:
         i = 0;
-        j = 1;
+        j = -1;
         break;
     case DOWN:
         i = 0;
-        j = -1;
+        j = 1;
         break;
     case LEFT:
         i = -1;
@@ -77,19 +78,19 @@ void snake::changedirection(bool player)
     peekmessage(&m, EX_KEY);
     if (m.message == WM_KEYDOWN)
     {
-        if (((m.vkcode == 0x57 && ~player) || (m.vkcode == VK_UP && player)) && direction != DOWN)
+        if (((m.vkcode == 0x57 && !player) || (m.vkcode == VK_UP && player)) && direction != DOWN)
         {
             direction = UP;
         }
-        if (((m.vkcode == 0x53 && ~player) || (m.vkcode == VK_DOWN && player)) && direction != UP)
+        if (((m.vkcode == 0x53 && !player) || (m.vkcode == VK_DOWN && player)) && direction != UP)
         {
             direction = DOWN;
         }
-        if (((m.vkcode == 0x41 && ~player) || (m.vkcode == VK_LEFT && player)) && direction != RIGHT)
+        if (((m.vkcode == 0x41 && !player) || (m.vkcode == VK_LEFT && player)) && direction != RIGHT)
         {
             direction = LEFT;
         }
-        if (((m.vkcode == 0x44 && ~player) || (m.vkcode == VK_RIGHT && player)) && direction != LEFT)
+        if (((m.vkcode == 0x44 && !player) || (m.vkcode == VK_RIGHT && player)) && direction != LEFT)
         {
             direction = RIGHT;
         }

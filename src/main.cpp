@@ -8,13 +8,18 @@ EasyX版本：20240601
 //
 #include "field.hpp"
 #include <easyx.h>
+#include <synchapi.h>
 #include <windows.h>
 
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-    field field;
-	field.draw();
+    field *field = new class field();
+    field->init();
     while (1)
-        ;
+    {
+        field->refresh();
+        field->draw();
+        Sleep(50);
+    }
     return 0;
 }
