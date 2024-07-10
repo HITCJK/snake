@@ -1,10 +1,6 @@
 #include "field.hpp"
-#include "time.h"
-#include "stdlib.h"
-#include <stdio.h>
-#include <conio.h>
-#include <consoleapi2.h>
-#include <synchapi.h>
+#include <time.h>
+#include <stdlib.h>
 #include "snake.hpp"
 
 int isFailure=0;/*是否失败*/
@@ -211,4 +207,16 @@ if(x<0||x>WIDTH||y<0||y>HEIGHT)
   g++;
 }
 updateWithoutInput(snake);/*蛇再次运动*/
+
+if (isFailure) //  如果游戏失败
+	{
+		setbkmode(TRANSPARENT); // 文字字体透明    
+		settextcolor(RGB(255,0,0));// 设定文字颜色
+		settextstyle(80, 0, _T("宋体")); //  设定文字大小、样式
+		outtextxy(240,220,_T("游戏失败")); //  输出文字内容
+	}
+	FlushBatchDraw(); // 批量绘制
+
 }
+
+
