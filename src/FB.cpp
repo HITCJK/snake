@@ -31,18 +31,6 @@ void updateWithoutInput(snake snake) // 蛇的运动
 	}
 }
 
-/*void updateWithInput(snake snake)  // 蛇的方向改变
-{
-	if(_kbhit() && isFailure==0)  //  如果有按键输入，并且不失败
-	{
-		char input =getchar(); //  获得按键输入
-		if (input=='a' || input=='s' || input=='d' || input=='w') // 如果是asdw 
-		{
-			snake.changedirection(0)=input;  // 设定移动方向
-			snake.move(); // 调用小蛇移动函数
-		}
-	}
-}*/
 
 /*判断是否与蛇身体重合*/
 int judge(snake snake,int a,int b)
@@ -75,24 +63,14 @@ int judge(snake snake,int a,int b)
 int getx(snake snake)
 {
   struct node*p=NULL;
-  int i;
   p=snake.gethead();
-  for(i=0;i<snake.getlength();i++)
-  {
-    p=snake.getnext(p);
-  }
   return p->x;
 }
 
 int gety(snake snake)
 {
   struct node*p=NULL;
-  int i;
   p=snake.gethead();
-  for(i=0;i<snake.getlength();i++)
-  {
-    p=snake.getnext(p);
-  }
   return p->y;
 }
 
@@ -107,8 +85,8 @@ void position()
   linklist linklist1;//设置对象1：面向食物
   linklist linklist2;//设置对象2：面向障碍
   snake snake(15,20,RIGHT);
-  field field;
-  int length1,length2;
+  field field;/*绘图*/
+  int length1,length2;/*食物和障碍链表的长度*/
   int i,j;/*遍历*/
   int m=0;/*判断食物或者障碍是否与蛇身重合*/
   static int g=0,k=0,a=0;/*判断是否第一次进入系统+进入次数*/
@@ -146,7 +124,7 @@ void position()
     k++;
     g=k;
   }
-  else if(k!=0&&a==60)/*刷新*/
+  else if(k!=0&&a==60)/*30s刷新*/
   {
     for(i=WIDTH-1;i>=0;i--)
     {
@@ -232,5 +210,5 @@ if(x<0||x>WIDTH||y<0||y>HEIGHT)
   isFailure=1;
   g++;
 }
-updateWithoutInput(snake);
+updateWithoutInput(snake);/*蛇再次运动*/
 }
