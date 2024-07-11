@@ -3,14 +3,14 @@
 #include <minwindef.h>
 #include <time.h>
 
-int GetRandomNumber() // ç”Ÿæˆéšæœºæ•°
+int GetRandomNumber() // Éú³ÉËæ»úÊı
 {
     int RandomNumber;
-    RandomNumber = rand() % 100 + 1; // ç”Ÿæˆ1-10éšæœºæ•°
+    RandomNumber = rand() % 100 + 1; // Éú³É1-10Ëæ»úÊı
     return RandomNumber;
 }
 
-/*åˆ¤æ–­æ˜¯å¦ä¸è›‡èº«ä½“é‡åˆ*/
+/*ÅĞ¶ÏÊÇ·ñÓëÉßÉíÌåÖØºÏ*/
 int judge(snake *snake, int a, int b)
 {
     int length, i, k = 0;
@@ -48,7 +48,7 @@ field::field()
             map[i][j] = 0;
         }
     }
-    srand((unsigned)time(NULL)); // time()ç”¨ç³»ç»Ÿæ—¶é—´åˆå§‹åŒ–ç§ã€‚ä¸ºrand()ç”Ÿæˆä¸åŒçš„éšæœºç§å­ã€‚
+    srand((unsigned)time(NULL)); // time()ÓÃÏµÍ³Ê±¼ä³õÊ¼»¯ÖÖ¡£Îªrand()Éú³É²»Í¬µÄËæ»úÖÖ×Ó¡£
 }
 
 field::~field()
@@ -59,37 +59,40 @@ field::~field()
 
 void field::draw()
 {
-    for (int i = 0; i < WIDTH; i++)
+    if (isfailure == FALSE)
     {
-        for (int j = 0; j < HEIGHT; j++)
+        for (int i = 0; i < WIDTH; i++)
         {
-            if (map[i][j] == 0)
+            for (int j = 0; j < HEIGHT; j++)
             {
-                // æ¸…ç©º
-                setfillcolor(LIGHTGRAY);
-                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
-            }
-            if (map[i][j] > 0)
-            {
-                // ç”»è›‡
-                setfillcolor(BLUE);
-                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
-            }
-            else if (map[i][j] == -1)
-            {
-                // ç”»é£Ÿç‰©
-                setfillcolor(RED);
-                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
-            }
-            else if (map[i][j] == -2)
-            {
-                // ç”»éšœç¢ç‰©
-                setfillcolor(BLACK);
-                fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
+                if (map[i][j] == 0)
+                {
+                    // Çå¿Õ
+                    setfillcolor(LIGHTGRAY);
+                    fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
+                }
+                if (map[i][j] > 0)
+                {
+                    // »­Éß
+                    setfillcolor(BLUE);
+                    fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
+                }
+                else if (map[i][j] == -1)
+                {
+                    // »­Ê³Îï
+                    setfillcolor(RED);
+                    fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
+                }
+                else if (map[i][j] == -2)
+                {
+                    // »­ÕÏ°­Îï
+                    setfillcolor(BLACK);
+                    fillrectangle(i * BLOCK_SIZE, j * BLOCK_SIZE, (i + 1) * BLOCK_SIZE, (j + 1) * BLOCK_SIZE);
+                }
             }
         }
+        FlushBatchDraw();
     }
-    FlushBatchDraw();
 }
 
 void field::init()
@@ -108,11 +111,11 @@ void field::init()
             m = judge(snake, i, j);
             if (m == 0)
             {
-                if (n <= 1) // æ§åˆ¶æ¯”ä¾‹ï¼Œå»ºç«‹é“¾è¡¨ç¡®å®šé£Ÿç‰©åæ ‡
+                if (n <= 1) // ¿ØÖÆ±ÈÀı£¬½¨Á¢Á´±íÈ·¶¨Ê³Îï×ø±ê
                 {
                     food->addnode(i, j);
                 }
-                else if (n > 99) // æ§åˆ¶æ¯”ä¾‹ï¼ˆéš¾åº¦å¯é€‰ï¼Ÿ)ï¼Œå»ºç«‹é“¾è¡¨ç¡®å®šéšœç¢åæ ‡
+                else if (n > 99) // ¿ØÖÆ±ÈÀı£¨ÄÑ¶È¿ÉÑ¡£¿)£¬½¨Á¢Á´±íÈ·¶¨ÕÏ°­×ø±ê
                 {
                     wall->addnode(i, j);
                 }
@@ -121,7 +124,7 @@ void field::init()
     }
 }
 
-void field::dataprocessing() // åƒåˆ°é£Ÿç‰©ï¼Œç¢°åˆ°éšœç¢ï¼Œè‡ªèº«ï¼Œè¾¹ç•Œæ¸¸æˆç»“æŸ
+void field::dataprocessing() // ³Ôµ½Ê³Îï£¬Åöµ½ÕÏ°­£¬×ÔÉí£¬±ß½çÓÎÏ·½áÊø
 {
     int x, y, i, j, a;
     x = snake->getx(1);
@@ -160,18 +163,18 @@ void field::dataprocessing() // åƒåˆ°é£Ÿç‰©ï¼Œç¢°åˆ°éšœç¢ï¼Œè‡ªèº«ï¼Œè¾¹ç•Œæ¸¸
     }
     if (map[x + i][y + j] > 0 || map[x + i][y + j] == -2)
     {
-        /*æ¸¸æˆå¤±è´¥*/
+        /*ÓÎÏ·Ê§°Ü*/
         isfailure = TRUE;
-        setbkmode(TRANSPARENT);              // æ–‡å­—å­—ä½“é€æ˜
-        settextcolor(RGB(255, 0, 0));        // è®¾å®šæ–‡å­—é¢œè‰²
-        settextstyle(80, 0, _T("å®‹ä½“"));     //  è®¾å®šæ–‡å­—å¤§å°ã€æ ·å¼
-        outtextxy(240, 220, _T("æ¸¸æˆå¤±è´¥")); //  è¾“å‡ºæ–‡å­—å†…å®¹
+        setbkmode(TRANSPARENT);              // ÎÄ×Ö×ÖÌåÍ¸Ã÷
+        settextcolor(RGB(255, 0, 0));        // Éè¶¨ÎÄ×ÖÑÕÉ«
+        settextstyle(80, 0, _T("ËÎÌå"));     //  Éè¶¨ÎÄ×Ö´óĞ¡¡¢ÑùÊ½
+        outtextxy(240, 220, _T("ÓÎÏ·Ê§°Ü")); //  Êä³öÎÄ×ÖÄÚÈİ
     }
-    FlushBatchDraw(); /*ç»˜åˆ¶*/
+    FlushBatchDraw(); /*»æÖÆ*/
     snake->move();
 }
 
-void field::maprefresh() /*åˆ·æ–°åœ°å›¾*/
+void field::maprefresh() /*Ë¢ĞÂµØÍ¼*/
 {
     if (isfailure == FALSE)
     {
