@@ -6,7 +6,7 @@
 int GetRandomNumber() // 生成随机数
 {
     int RandomNumber;
-    RandomNumber = rand() % 100 + 1; // 生成1-10随机数
+    RandomNumber = rand() % 100 + 1; // 生成1-100随机数
     return RandomNumber;
 }
 
@@ -18,6 +18,35 @@ int judge(snake *snake, int a, int b)
     for (i = 1; i <= length; i++)
     {
         if (a == snake->getx(i) && b == snake->gety(i))
+        {
+            k = 1;
+        }
+    }
+    return k;
+}
+/*判断是否与食物重合*/
+int judgefood(linklist *food, int a, int b)
+{
+    int length, i, k = 0;
+    length = food->getlength();
+    for (i = 1; i <= length; i++)
+    {
+        if (a == food->getx(i) && b == food->gety(i))
+        {
+            k = 1;
+        }
+    }
+    return k;
+}
+
+/*判断是否与障碍重合*/
+int judgewall(linklist *wall, int a, int b)
+{
+    int length, i, k = 0;
+    length = wall->getlength();
+    for (i = 1; i <= length; i++)
+    {
+        if (a == wall->getx(i) && b == wall->gety(i))
         {
             k = 1;
         }
@@ -122,6 +151,7 @@ void field::init()
             }
         }
     }
+    num = 0;
 }
 
 void field::dataprocessing() // 吃到食物，碰到障碍，自身，边界游戏结束
@@ -161,7 +191,7 @@ void field::dataprocessing() // 吃到食物，碰到障碍，自身，边界游戏结束
             a--;
         }
     }
-    if (map[x + i][y + j] > 0 || map[x + i][y + j] == -2)
+    if (map[x + i][y + j] > 0 || map[x + i][y + j] == -2 || (x + i) < 0 || (x + i) >= WIDTH || (y + j) < 0 || (y + j) >= HEIGHT)
     {
         /*游戏失败*/
         isfailure = TRUE;
@@ -178,9 +208,77 @@ void field::maprefresh() /*刷新地图*/
 {
     if (isfailure == FALSE)
     {
+        num++;
+        int p = 0;
         int length = snake->getlength();
         int lengthfood = food->getlength();
         int lengthwall = wall->getlength();
+        if (lengthfood == 1) /*食物全被吃完时自动刷新*/
+        {
+            while (lengthfood != 0)
+            {
+                food->deletenode(1);
+                lengthfood = food->getlength();
+            }
+            food = new class linklist(0, 0);
+            for (int i = 0; i < WIDTH; i++)
+            {
+                for (int j = 0; j < HEIGHT; j++)
+                {
+                    int n = GetRandomNumber();
+                    int m = judge(snake, i, j);
+                    int p = judgewall(wall, i, j);
+                    if (m == 0 && p == 0)
+                    {
+                        if (n <= 1) // 控制比例，建立链表确定食物坐标
+                        {
+                            food->addnode(i, j);
+                        }
+                    }
+                }
+            }
+            num = 0;
+        }
+        else
+        {
+            if (num == 10) /*如果食物还未吃完，一定时间后清除剩余的食物，重新生成食物，同时增加一个障碍*/
+            {
+                while (lengthfood != 0)
+                {
+                    food->deletenode(1);
+                    lengthfood = food->getlength();
+                }
+                food = new class linklist(0, 0);
+                for (int i = 0; i < WIDTH; i++)
+                {
+                    for (int j = 0; j < HEIGHT; j++)
+                    {
+                        int n = GetRandomNumber();
+                        int m = judge(snake, i, j);
+                        int p = judgewall(wall, i, j);
+                        if (m == 0 && p == 0)
+                        {
+                            if (n <= 1) // 控制比例，建立链表确定食物坐标
+                            {
+                                food->addnode(i, j);
+                            }
+                        }
+                    }
+                } // 重新生成食物
+                int g = 0; /*生成一个障碍*/
+                while (g != 1)
+                {
+                    int n = GetRandomNumber();
+                    int m = (n - 1) % 10;
+                    if (judge(snake, m * 4, m * 3) == 0 && judgefood(food, m * 4, m * 3) == 0 && judgewall(wall, m * 4, m * 3) == 0)
+                    {
+                        wall->addnode(m * 4, m * 3);
+                        g = 1;
+                    }
+                }
+                num = 0;
+            }
+        }
         for (int i = 0; i < WIDTH; i++)
         {
             for (int j = 0; j < HEIGHT; j++)
