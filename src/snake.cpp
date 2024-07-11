@@ -1,4 +1,5 @@
 #include "snake.hpp"
+#include <cstddef>
 #include <winuser.h>
 
 snake::snake(int x, int y, dir dir1)
@@ -74,23 +75,24 @@ void snake::grow()
 // 蛇改变方向
 void snake::changedirection(bool player)
 {
-    ExMessage m;
-    peekmessage(&m, EX_KEY);
+    MSG m;
+    PeekMessage(&m,NULL, 0, 0, PM_REMOVE);
+    if (m.wParam == VK_PROCESSKEY) direction = UP;
     if (m.message == WM_KEYDOWN)
     {
-        if (((m.vkcode == 0x57 && !player) || (m.vkcode == VK_UP && player)) && direction != DOWN)
+        if (((m.wParam == 0x57 && !player) || (m.wParam == VK_UP && player)) && direction != DOWN)
         {
             direction = UP;
         }
-        if (((m.vkcode == 0x53 && !player) || (m.vkcode == VK_DOWN && player)) && direction != UP)
+        else if (((m.wParam == 0x53 && !player) || (m.wParam == VK_DOWN && player)) && direction != UP)
         {
             direction = DOWN;
         }
-        if (((m.vkcode == 0x41 && !player) || (m.vkcode == VK_LEFT && player)) && direction != RIGHT)
+        else if (((m.wParam == 0x41 && !player) || (m.wParam == VK_LEFT && player)) && direction != RIGHT)
         {
             direction = LEFT;
         }
-        if (((m.vkcode == 0x44 && !player) || (m.vkcode == VK_RIGHT && player)) && direction != LEFT)
+        else if (((m.wParam == 0x44 && !player) || (m.wParam == VK_RIGHT && player)) && direction != LEFT)
         {
             direction = RIGHT;
         }

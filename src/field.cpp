@@ -24,6 +24,8 @@ field::field()
             map[i][j] = 0;
         }
     }
+    // 屏蔽输入法
+    ImmAssociateContext(GetHWnd(), NULL);
 }
 
 field::~field()

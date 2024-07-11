@@ -5,7 +5,8 @@ target("snake")
     add_files("src/*.cpp")
     add_syslinks(
     "user32",
-    "Shell32"
+    "Shell32",
+    "imm32"
     )
     add_files("resource.rc")
     add_includedirs("src")
