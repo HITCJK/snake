@@ -53,12 +53,19 @@ void linklist::deletenode(int index)
 {
     node *p = head;
     node *q;
+    if(index==1)
+    {
+        head=p->next;
+    }
+    else 
+    {
     for (int i = 1; i < index; i++)
     {
         q = p;
         p = p->next;
     }
     q->next = p->next;
+    }
     delete p;
     length--;
 }

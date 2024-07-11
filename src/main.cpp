@@ -17,6 +17,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
     field->init();
     while (1)
     {
+        field->check();
         field->refresh();
         field->draw();
         Sleep(50);
