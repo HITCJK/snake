@@ -148,7 +148,7 @@ void field::init()
   int lengthfood =food->getlength();
   for(a=1;a<=lengthfood;a++)
   {
-    if(x+i==food->getx(a)&&y+j==food->gety(a))
+    if((x+i)==food->getx(a)&&(y+j)==food->gety(a))
     {
         food->deletenode(a);
         snake->grow();
