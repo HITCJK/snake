@@ -10,6 +10,19 @@ int GetRandomNumber() // 生成随机数
     return RandomNumber;
 }
 
+int GetRandomNumber1() // 生成随机数
+{
+    int RandomNumber;
+    RandomNumber = rand() % 40; // 生成0-39随机数
+    return RandomNumber;
+}
+
+int GetRandomNumber2() // 生成随机数
+{
+    int RandomNumber;
+    RandomNumber = rand() % 30; // 生成0-29随机数
+    return RandomNumber;
+}
 /*判断是否与蛇身体重合*/
 int judge(snake *snake, int a, int b)
 {
@@ -268,11 +281,11 @@ void field::maprefresh() /*刷新地图*/
                 int g = 0; /*生成一个障碍*/
                 while (g != 1)
                 {
-                    int n = GetRandomNumber();
-                    int m = (n - 1) % 10;
-                    if (judge(snake, m * 4, m * 3) == 0 && judgefood(food, m * 4, m * 3) == 0 && judgewall(wall, m * 4, m * 3) == 0)
+                    int n = GetRandomNumber1();
+                    int m = GetRandomNumber2();
+                    if (judge(snake, n, m) == 0 && judgefood(food, n, m) == 0 && judgewall(wall, n, m) == 0)
                     {
-                        wall->addnode(m * 4, m * 3);
+                        wall->addnode(n, m);
                         g = 1;
                     }
                 }
