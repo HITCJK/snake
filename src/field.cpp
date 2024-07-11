@@ -1,29 +1,29 @@
 #include "field.hpp"
 #include <easyx.h>
+#include <minwindef.h>
 #include <time.h>
 
-int GetRandomNumber()//生成随机数
-{ 
-int RandomNumber;
-RandomNumber =rand()%100+1;//生成1-10随机数
-return RandomNumber;
+int GetRandomNumber() // 生成随机数
+{
+    int RandomNumber;
+    RandomNumber = rand() % 100 + 1; // 生成1-10随机数
+    return RandomNumber;
 }
 
 /*判断是否与蛇身体重合*/
-int judge(snake *snake,int a,int b)
+int judge(snake *snake, int a, int b)
 {
-  int length,i,k=0;
-  length=snake->getlength();
-  for(i=1;i<=length;i++)
-  {
-    if(a==snake->getx(i)&&b==snake->gety(i))
+    int length, i, k = 0;
+    length = snake->getlength();
+    for (i = 1; i <= length; i++)
     {
-        k=1;
+        if (a == snake->getx(i) && b == snake->gety(i))
+        {
+            k = 1;
+        }
     }
-  }
-  return k;
+    return k;
 }
-
 
 field::field()
 {
@@ -48,7 +48,7 @@ field::field()
             map[i][j] = 0;
         }
     }
-    srand((unsigned)time(NULL));//time()用系统时间初始化种。为rand()生成不同的随机种子。 
+    srand((unsigned)time(NULL)); // time()用系统时间初始化种。为rand()生成不同的随机种子。
 }
 
 field::~field()
@@ -94,39 +94,41 @@ void field::draw()
 
 void field::init()
 {
+    isfailure = FALSE;
     snake = new class snake(15, 20, RIGHT);
-    food = new class linklist(0,0);
-    wall = new class linklist(0,0);
-    int i,j;
-    int m=0,n;
-    for(i=0;i<WIDTH;i++)
+    food = new class linklist(0, 0);
+    wall = new class linklist(0, 0);
+    int i, j;
+    int m = 0, n;
+    for (i = 0; i < WIDTH; i++)
     {
-       for(j=0;j<HEIGHT;j++)
-       {
-        n=GetRandomNumber();
-        m=judge(snake,i,j);
-        if(m==0)
+        for (j = 0; j < HEIGHT; j++)
         {
-          if(n<=1)//控制比例，建立链表确定食物坐标
-          {
-            food->addnode(i,j);
-          }
-          else if(n>99)//控制比例（难度可选？)，建立链表确定障碍坐标
-          {
-            wall->addnode(i,j);
-          }
+            n = GetRandomNumber();
+            m = judge(snake, i, j);
+            if (m == 0)
+            {
+                if (n <= 1) // 控制比例，建立链表确定食物坐标
+                {
+                    food->addnode(i, j);
+                }
+                else if (n > 99) // 控制比例（难度可选？)，建立链表确定障碍坐标
+                {
+                    wall->addnode(i, j);
+                }
+            }
         }
-       }
     }
 }
 
- void field::check()
+void field::dataprocessing() // 吃到食物，碰到障碍，自身，边界游戏结束
 {
-  int x,y,i,j,a;
-  x=snake->getx(1);
-  y=snake->gety(1);
-  dir direction=snake->getdirection();
-  switch (direction)
+    int x, y, i, j, a;
+    x = snake->getx(1);
+    y = snake->gety(1);
+    snake->changedirection();
+    dir direction = snake->getdirection();
+    switch (direction)
     {
     case UP:
         i = 0;
@@ -145,41 +147,55 @@ void field::init()
         j = 0;
         break;
     }
-  int lengthfood =food->getlength();
-  for(a=1;a<=lengthfood;a++)
-  {
-    if((x+i)==food->getx(a)&&(y+j)==food->gety(a))
+    int lengthfood = food->getlength();
+    for (a = 1; a <= lengthfood; a++)
     {
-        food->deletenode(a);
-        snake->grow();
-    }
-  }
-}
-
-void field::refresh()
-{
-    snake->changedirection();
-    snake->move();
-    int length = snake->getlength();
-    int lengthfood =food->getlength();
-    int lengthwall =wall->getlength();
-    for (int i = 0; i < WIDTH; i++)
-    {
-        for (int j = 0; j < HEIGHT; j++)
+        if ((x + i) == food->getx(a) && (y + j) == food->gety(a))
         {
-            map[i][j] = 0;
+            food->deletenode(a);
+            lengthfood = food->getlength();
+            snake->grow();
+            a--;
         }
     }
-    for (int i = 1; i <= length; i++)
+    if (map[x + i][y + j] > 0 || map[x + i][y + j] == -2)
     {
-        map[snake->getx(i)][snake->gety(i)] = i;
+        /*游戏失败*/
+        isfailure = TRUE;
+        setbkmode(TRANSPARENT);              // 文字字体透明
+        settextcolor(RGB(255, 0, 0));        // 设定文字颜色
+        settextstyle(80, 0, _T("宋体"));     //  设定文字大小、样式
+        outtextxy(240, 220, _T("游戏失败")); //  输出文字内容
     }
-    for (int i = 1; i <= lengthfood; i++)
+    FlushBatchDraw(); /*绘制*/
+    snake->move();
+}
+
+void field::maprefresh() /*刷新地图*/
+{
+    if (isfailure == FALSE)
     {
-        map[food->getx(i)][food->gety(i)] = -1;
-    }
-    for (int i = 1; i <= lengthwall; i++)
-    {
-        map[wall->getx(i)][wall->gety(i)] = -2;
+        int length = snake->getlength();
+        int lengthfood = food->getlength();
+        int lengthwall = wall->getlength();
+        for (int i = 0; i < WIDTH; i++)
+        {
+            for (int j = 0; j < HEIGHT; j++)
+            {
+                map[i][j] = 0;
+            }
+        }
+        for (int i = 1; i <= length; i++)
+        {
+            map[snake->getx(i)][snake->gety(i)] = i;
+        }
+        for (int i = 1; i <= lengthfood; i++)
+        {
+            map[food->getx(i)][food->gety(i)] = -1;
+        }
+        for (int i = 1; i <= lengthwall; i++)
+        {
+            map[wall->getx(i)][wall->gety(i)] = -2;
+        }
     }
 }

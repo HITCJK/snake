@@ -17,10 +17,10 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
     field->init();
     while (1)
     {
-        field->check();
-        field->refresh();
+        field->dataprocessing();
+        field->maprefresh();
         field->draw();
-        Sleep(50);
+        Sleep(150);
     }
     return 0;
 }

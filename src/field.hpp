@@ -18,12 +18,14 @@ class field
         field();
         ~field();
         void init();
-        void check();
-        void refresh();
+        void dataprocessing();
+        void maprefresh();
         void draw();
     private:
         snake *snake;
         linklist *food;
         linklist *wall;
+        bool isfailure;
+        int num;
         int map[WIDTH][HEIGHT];
 };
