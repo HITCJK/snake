@@ -1,7 +1,18 @@
 #include "field.hpp"
+#include <consoleapi2.h>
 #include <easyx.h>
 #include <minwindef.h>
+#include <processenv.h>
 #include <time.h>
+#include <winbase.h>
+#include <windows.h>
+#include <stdio.h>
+
+void gotoxy(short i, short j) /*移动光标*/
+{
+    COORD position = {i, j};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+}
 
 int GetRandomNumber() // 生成随机数
 {
@@ -133,7 +144,41 @@ void field::draw()
                 }
             }
         }
-        FlushBatchDraw();
+        TCHAR s[4], k[4];
+        int length = snake->getlength();
+        static int n = 0;
+        static int seconds = 0;/*注意静态变量*/
+        if (n < 10)
+        {
+            n++;
+            _stprintf(s, _T("%d"), length);
+            _stprintf(k, _T("%d"), seconds);
+            setbkmode(TRANSPARENT);           // 文字字体透明
+            settextcolor(RGB(255, 40, 26));   // 设定文字颜色
+            settextstyle(20, 0, _T("宋体"));  //  设定文字大小、样式
+            outtextxy(700, 0, _T("长度: "));  //  输出文字内容
+            outtextxy(760, 0, s);             //  输出文字内容
+            outtextxy(700, 20, _T("时间: ")); //  输出文字内容
+            outtextxy(760, 20, k);            //  输出文字内容
+            outtextxy(780, 20, _T("秒 "));
+            FlushBatchDraw();
+        }
+        else
+        {
+            n = 0;
+            seconds++;
+            _stprintf(s, _T("%d"), length);
+            _stprintf(k, _T("%d"), seconds);
+            setbkmode(TRANSPARENT);           // 文字字体透明
+            settextcolor(RGB(255, 40, 26));   // 设定文字颜色
+            settextstyle(20, 0, _T("宋体"));  //  设定文字大小、样式
+            outtextxy(700, 0, _T("长度: "));  //  输出文字内容
+            outtextxy(760, 0, s);             //  输出文字内容
+            outtextxy(700, 20, _T("时间: ")); //  输出文字内容
+            outtextxy(760, 20, k);            //  输出文字内容
+            outtextxy(780, 20, _T("秒 "));
+            FlushBatchDraw();
+        }
     }
 }
 
@@ -304,6 +349,8 @@ void field::maprefresh() /*刷新地图*/
                 num = 0;
             }
         }
+        gotoxy(1, 1);
+        printf(" 长度：%d", length);
         for (int i = 0; i < WIDTH; i++)
         {
             for (int j = 0; j < HEIGHT; j++)

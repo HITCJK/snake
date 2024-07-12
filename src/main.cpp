@@ -20,7 +20,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
         field->dataprocessing();
         field->maprefresh();
         field->draw();
-        Sleep(150);
+        Sleep(100);
     }
     return 0;
 }
