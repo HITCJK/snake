@@ -250,11 +250,23 @@ void field::maprefresh() /*刷新地图*/
                     }
                 }
             }
+            int g = 0; /*生成一个障碍*/
+            while (g != 1)
+            {
+                int n = GetRandomNumber1();
+                int m = GetRandomNumber2();
+                if (judge(snake, n, m) == 0 && judgefood(food, n, m) == 0 && judgewall(wall, n, m) == 0)
+                {
+                    wall->addnode(n, m);
+                    g = 1;
+                }
+            }
+            num = 0;
             num = 0;
         }
         else
         {
-            if (num == 10) /*如果食物还未吃完，一定时间后清除剩余的食物，重新生成食物，同时增加一个障碍*/
+            if (num == 1000) /*如果食物还未吃完，一定时间后清除剩余的食物，重新生成食物，同时增加一个障碍*/
             {
                 while (lengthfood != 0)
                 {
