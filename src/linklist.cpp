@@ -20,7 +20,7 @@ linklist::~linklist()
     }
 }
 
-// è®¾ç½®èŠ‚ç‚¹çš„åæ ‡
+// ÉèÖÃ½ÚµãµÄ×ø±ê
 void linklist::setcoordinates(int index, int x, int y)
 {
     node *p = head;
@@ -32,7 +32,7 @@ void linklist::setcoordinates(int index, int x, int y)
     p->y = y;
 }
 
-// åœ¨é“¾è¡¨æœ«å°¾æ·»åŠ èŠ‚ç‚¹
+// ÔÚÁ´±íÄ©Î²Ìí¼Ó½Úµã
 void linklist::addnode(int x, int y)
 {
     node *p = head;
@@ -48,7 +48,7 @@ void linklist::addnode(int x, int y)
     length++;
 }
 
-// åˆ é™¤èŠ‚ç‚¹
+// É¾³ı½Úµã
 void linklist::deletenode(int index)
 {
     node *p = head;
@@ -70,7 +70,7 @@ void linklist::deletenode(int index)
     length--;
 }
 
-// è·å–èŠ‚ç‚¹çš„xåæ ‡
+// »ñÈ¡½ÚµãµÄx×ø±ê
 int linklist::getx(int index)
 {
     node *p = head;
@@ -81,7 +81,7 @@ int linklist::getx(int index)
     return p->x;
 }
 
-// è·å–èŠ‚ç‚¹çš„yåæ ‡
+// »ñÈ¡½ÚµãµÄy×ø±ê
 int linklist::gety(int index)
 {
     node *p = head;
@@ -92,7 +92,7 @@ int linklist::gety(int index)
     return p->y;
 }
 
-// è·å–é“¾è¡¨é•¿åº¦
+// »ñÈ¡Á´±í³¤¶È
 int linklist::getlength()
 {
     return length;
